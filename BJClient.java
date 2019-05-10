@@ -115,16 +115,19 @@ public class BJClient extends Application{
 		
 		Label textport = new Label("Port: ");
 		textport.setFont(Font.font("cambria", 20));
+		textport.setTextFill(Color.WHITE);
 		TextField portinput = new TextField();
 		portinput.setMaxWidth(200);
 		Label textip = new Label("IP: ");
 		textip.setFont(Font.font("cambria", 20));
+		textip.setTextFill(Color.WHITE);
 		TextField ipinput = new TextField();
 		ipinput.setMaxWidth(200);
 		connect_n = new Button("Connect");
 		exit_n = new Button("Exit");
 		info = new Label("Game Info:");
 		info.setFont(Font.font("cambria", 25));
+		info.setTextFill(Color.WHITE);
 		messages.setPrefHeight(400);
 		messages.setPrefWidth(450);
 		pass = new Button("SUBMIT");
@@ -173,18 +176,26 @@ public class BJClient extends Application{
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
-			
 		});
 		
 		pass.setOnAction(e->{
 			try {
 				conn.send("yes");
 				pass.setDisable(true);
+				get.setDisable(true);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		});
+		
+		Image pic2 = new Image("bj2.jpg");
+
+		ImageView b2 = new ImageView(pic2);
+		b2.setFitHeight(600);
+		b2.setFitWidth(900);
+		b2.setPreserveRatio(true);
+		b2.setImage(pic2);
 		
 		HBox opts = new HBox (60, connect_n, exit_n);
 		VBox box = new VBox (20, textport, portinput, textip, ipinput, opts);
@@ -197,17 +208,10 @@ public class BJClient extends Application{
 		//set group
 		Group network = new Group();
 		networking = new Scene(network,900,600);
+		network.getChildren().addAll(b2);
 		network.getChildren().addAll(box, game_info);
-		/*
-		//image////////////////////////////////////////////////////////////////////////
-		Image pic2 = new Image("game.jpg");
-
-		ImageView b2 = new ImageView(pic2);
-		b2.setFitHeight(600);
-		b2.setFitWidth(900);
-		b2.setPreserveRatio(true);
-		b2.setImage(pic2);
-		*/
+	
+		
 		sceneMap.put("start_sc", scene);
 		sceneMap.put("network_sc", networking);
 		
