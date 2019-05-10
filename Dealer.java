@@ -1,4 +1,3 @@
-
 public class Dealer extends Deck{
 	
 	private Deck dealerDeck;
@@ -46,10 +45,6 @@ public class Dealer extends Deck{
 		Card card = dealerDeck.getNthCard(0);
 		dealerDeck.deleteNthCard(0);
 		return card;
-	}
-	
-	public void compare() {
-		
 	}
 
 }

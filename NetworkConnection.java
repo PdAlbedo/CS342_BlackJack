@@ -12,12 +12,12 @@ public abstract class NetworkConnection {
 	Deck dealer_Deck = new Deck();
 	private ConnThread connthread = new ConnThread();
 	protected int count = 0;
-	protected int num_players_ol = 0;
+	//protected int num_players_ol = 0;
 	private Consumer<Serializable> callback;
 	boolean clientOne, clientTwo;
 	String dataOne, dataTwo;
 	ArrayList<ClientThread> ct;
-	ArrayList<Player_info> pi;
+	//ArrayList<Player_info> pi;
 	//the list to store the players who wants to play
 	//ArrayList<ClientThread> playable_list;
 	//private int score1,score2;

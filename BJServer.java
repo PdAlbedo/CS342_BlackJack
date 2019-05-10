@@ -122,8 +122,8 @@ public class BJServer extends Application{
 		Text textport = new Text("Port:");
 		TextField text = new TextField();
 		
-		HBox game_opt = new HBox(200, btn, start_Net);
-		VBox portbox = new VBox(30, textport, text, game_opt, messages, quit);
+		//HBox game_opt = new HBox(200, btn, start_Net);
+		VBox portbox = new VBox(30, textport, text, btn, messages, quit);
 		portbox.setPadding(new Insets(20,10,0,10));
 		
 		//Server on btn on network scene
@@ -147,13 +147,14 @@ public class BJServer extends Application{
 		});
 		
 		//start btn on network scene goes to game scene
+		/*
 		start_Net.setOnAction (new EventHandler<ActionEvent>() {
 			public void handle (ActionEvent event) {
 				myStage.setScene(sceneMap.get("game_s"));
 				start_Net.setDisable(true);
 			}
 		});
-		
+		*/
 		//quit btn on network scene
 		quit.setOnAction(event-> {
 			primaryStage.close();
@@ -193,7 +194,8 @@ public class BJServer extends Application{
 		
 	//game scene
 		//image
-		Image pic2 = new Image("game.jpg");
+		/*
+		Image pic2 = new Image("bj2.jpg");
 
 		ImageView b2 = new ImageView(pic2);
 		b2.setFitHeight(600);
@@ -245,7 +247,7 @@ public class BJServer extends Application{
 		VBox p4 = new VBox (10, p4_0, p4_1);
 		p4.setLayoutX(580);
 		p4.setLayoutY(380);
-		/*
+		
 		waiting.setTextFill(Color.WHITE);
 		waiting.setFont(Font.font("Cambria", 20));
 		waiting.setLayoutX(330);
@@ -253,6 +255,7 @@ public class BJServer extends Application{
 		*/
 		
 		//set group
+		/*
 		Group gamePlay = new Group();
 		game = new Scene(gamePlay,900,600);
 		gamePlay.getChildren().addAll(b2);
@@ -262,12 +265,12 @@ public class BJServer extends Application{
 		gamePlay.getChildren().add(p3);
 		gamePlay.getChildren().add(p4);
 		//gamePlay.getChildren().add(waiting);
-		
+		*/
 		
 		//map
 		sceneMap.put("start_s", scene);
 		sceneMap.put("network_s", networking);
-		sceneMap.put("game_s", game);
+		//sceneMap.put("game_s", game);
 		
 		primaryStage.setScene(sceneMap.get("start_s"));
 		primaryStage.setResizable(false);

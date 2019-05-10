@@ -194,7 +194,7 @@ public class BJClient extends Application{
 		ImageView b2 = new ImageView(pic2);
 		b2.setFitHeight(600);
 		b2.setFitWidth(900);
-		b2.setPreserveRatio(true);
+		//b2.setPreserveRatio(true);
 		b2.setImage(pic2);
 		
 		HBox opts = new HBox (60, connect_n, exit_n);
