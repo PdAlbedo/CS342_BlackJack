@@ -2,14 +2,24 @@
 public class Player extends Dealer {
 	private Deck playerHand; 
 	private int handValue = 0;
+	private boolean playable;
 	
 	public void setPlayerHand(Deck hand) {
 		playerHand = new Deck();
 		playerHand = hand;
+		playable = false;
 	}
 	
 	public Deck getPlayerHand() {
 		return this.playerHand;
+	}
+	
+	public boolean getstat() {
+		return this.playable;
+	}
+	
+	public void setstat(boolean a) {
+		this.playable = a;
 	}
 	
 	public void getHand() {

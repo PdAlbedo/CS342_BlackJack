@@ -85,11 +85,20 @@ public class Deck {
 			 //add to tmpDeck
 			 tmpDeck.add(this.cards.get(randomNum));
 			 //delete from cards deck
-			 this.cards.remove(randomNum);
+			 this.cards.remove(randomNum);//SHOULD THIS BE RANDOMNUM-1?
 			 tmpSize--;
 		}
 		this.cards = tmpDeck;
 		size--;
+	}
+	
+	public int cout() {
+		int c = 0;
+		for(int i =0; i<this.cards.size(); i++) {
+			c = c + (this.getCards().get(i).toInt());
+		}
+		return c;
+
 	}
 }
 

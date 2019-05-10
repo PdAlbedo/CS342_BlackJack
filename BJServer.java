@@ -51,7 +51,17 @@ public class BJServer extends Application{
 	
 	//game scene
 	Scene game;
-	Label waiting = new Label("Waiting for the other players...");
+	Label p0_0 = new Label("Dealer:");
+	TextArea p0_1;
+	Label p1_0 = new Label("Player 1:");
+	TextArea p1_1;
+	Label p2_0 = new Label("Player 2:");
+	TextArea p2_1;
+	Label p3_0 = new Label("Player 3:");
+	TextArea p3_1;
+	Label p4_0 = new Label("Player 4:");
+	TextArea p4_1;
+	//Label waiting = new Label("Waiting for the other players...");
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -186,22 +196,71 @@ public class BJServer extends Application{
 
 		ImageView b2 = new ImageView(pic2);
 		b2.setFitHeight(600);
-		b2.setFitWidth(600);
+		b2.setFitWidth(900);
 		b2.setPreserveRatio(true);
 		b2.setImage(pic2);
 		
+		p0_0.setTextFill(Color.BLACK);
+		p0_0.setFont(Font.font("Cambria", 20));
+		p0_1 = new TextArea();
+		p0_1.setPrefHeight(120);
+		p0_1.setPrefWidth(300);
+		VBox p0 = new VBox (10, p0_0, p0_1);
+		p0.setLayoutX(300);
+		p0.setLayoutY(20);
+		
+		p1_0.setTextFill(Color.BLACK);
+		p1_0.setFont(Font.font("Cambria", 20));
+		p1_1 = new TextArea();
+		p1_1.setPrefHeight(120);
+		p1_1.setPrefWidth(300);
+		VBox p1 = new VBox (10, p1_0, p1_1);
+		p1.setLayoutX(20);
+		p1.setLayoutY(180);
+
+		p2_0.setTextFill(Color.BLACK);
+		p2_0.setFont(Font.font("Cambria", 20));
+		p2_1 = new TextArea();
+		p2_1.setPrefHeight(120);
+		p2_1.setPrefWidth(300);
+		VBox p2 = new VBox (10, p2_0, p2_1);
+		p2.setLayoutX(580);
+		p2.setLayoutY(180);
+		
+		p3_0.setTextFill(Color.BLACK);
+		p3_0.setFont(Font.font("Cambria", 20));
+		p3_1 = new TextArea();
+		p3_1.setPrefHeight(120);
+		p3_1.setPrefWidth(300);
+		VBox p3 = new VBox (10, p3_0, p3_1);
+		p3.setLayoutX(20);
+		p3.setLayoutY(380);
+		
+		p4_0.setTextFill(Color.BLACK);
+		p4_0.setFont(Font.font("Cambria", 20));
+		p4_1 = new TextArea();
+		p4_1.setPrefHeight(120);
+		p4_1.setPrefWidth(300);
+		VBox p4 = new VBox (10, p4_0, p4_1);
+		p4.setLayoutX(580);
+		p4.setLayoutY(380);
+		/*
 		waiting.setTextFill(Color.WHITE);
 		waiting.setFont(Font.font("Cambria", 20));
-		waiting.setLayoutX(140);
-		waiting.setLayoutY(180);
+		waiting.setLayoutX(330);
+		waiting.setLayoutY(290);
+		*/
 		
 		//set group
 		Group gamePlay = new Group();
-		game = new Scene(gamePlay,600,400);
+		game = new Scene(gamePlay,900,600);
 		gamePlay.getChildren().addAll(b2);
-		gamePlay.getChildren().add(waiting);
-		
-		
+		gamePlay.getChildren().add(p0);
+		gamePlay.getChildren().add(p1);
+		gamePlay.getChildren().add(p2);
+		gamePlay.getChildren().add(p3);
+		gamePlay.getChildren().add(p4);
+		//gamePlay.getChildren().add(waiting);
 		
 		
 		//map

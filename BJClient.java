@@ -43,11 +43,25 @@ public class BJClient extends Application{
 	
 	//network scene
 	Scene networking;
-	Button startGame;
+	Button connect_n;
+	Button exit_n;
+	Button pass;
+	Button get;
+	Label info;
 	
 	//game scene
 	Scene game;
-	Label waiting = new Label("Waiting for the other players...");
+	Label p0_0 = new Label("Dealer:");
+	TextArea p0_1;
+	Label p1_0 = new Label("Player 1:");
+	TextArea p1_1;
+	Label p2_0 = new Label("Player 2:");
+	TextArea p2_1;
+	Label p3_0 = new Label("Player 3:");
+	TextArea p3_1;
+	Label p4_0 = new Label("Player 4:");
+	TextArea p4_1;
+	//Label waiting = new Label("Waiting for the other players...");
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -94,26 +108,33 @@ public class BJClient extends Application{
 		root.getChildren().add(exit);
 		scene = new Scene(root,600,300);
 		
-	//network scene
-		startGame = new Button("Start");
-		//startGame.setLayoutX(300);
-		//startGame.setLayoutY(550);
-		
+	//network & game scene
 		
 		messages.setPrefHeight(200);
 		//TextField input = new TextField();
 		
-		Text textport = new Text("Port: ");
+		Label textport = new Label("Port: ");
+		textport.setFont(Font.font("cambria", 20));
 		TextField portinput = new TextField();
-		Text textip = new Text("IP: ");
+		portinput.setMaxWidth(200);
+		Label textip = new Label("IP: ");
+		textip.setFont(Font.font("cambria", 20));
 		TextField ipinput = new TextField();
-		Button btn = new Button("Connect");
-		exit = new Button("Exit");
+		ipinput.setMaxWidth(200);
+		connect_n = new Button("Connect");
+		exit_n = new Button("Exit");
+		info = new Label("Game Info:");
+		info.setFont(Font.font("cambria", 25));
+		messages.setPrefHeight(400);
+		messages.setPrefWidth(450);
+		pass = new Button("SUBMIT");
+		get = new Button("GET");
 		//exit.setLayoutX(350);
 		//exit.setLayoutY(380);
 		
+		//start_n.setDisable(true);
 		
-		btn.setOnAction(event->{
+		connect_n.setOnAction(event->{
 			System.out.println("conneting..");
 			System.out.println("port: "+ portinput.getText());
 			System.out.println("ip: "+ ipinput.getText());
@@ -137,62 +158,64 @@ public class BJClient extends Application{
 				e.printStackTrace();
 			}
 			//messages.appendText("connected to "+ porti);
-			btn.setDisable(true);
-				
+			connect_n.setDisable(true);
 		});
 		
-		exit.setOnAction(e->{
+		exit_n.setOnAction(e->{
 			primaryStage.close();
 			
 		});
 		
-		HBox opts = new HBox (380, btn, exit);
-		VBox box = new VBox (20, messages, textport, portinput, textip, ipinput, opts);
-		box.setPadding(new Insets(40, 20, 20, 20));
+		get.setOnAction(event->{
+			System.out.println("Get another card.");
+			try {
+				conn.send("get");
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			
+		});
+		
+		pass.setOnAction(e->{
+			try {
+				conn.send("yes");
+				pass.setDisable(true);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
+		
+		HBox opts = new HBox (60, connect_n, exit_n);
+		VBox box = new VBox (20, textport, portinput, textip, ipinput, opts);
+		box.setLayoutX(50);
+		box.setLayoutY(20);
+		HBox get_pass = new HBox (50, get, pass);
+		VBox game_info = new VBox (30, info, messages, get_pass);
+		game_info.setLayoutX(400);
+		game_info.setLayoutY(20);
 		//set group
 		Group network = new Group();
-		networking = new Scene(network,520,500);
-		network.getChildren().addAll(box);
-		
-		
-		
-		
-		
-	//game scene
-		//image
+		networking = new Scene(network,900,600);
+		network.getChildren().addAll(box, game_info);
+		/*
+		//image////////////////////////////////////////////////////////////////////////
 		Image pic2 = new Image("game.jpg");
 
 		ImageView b2 = new ImageView(pic2);
 		b2.setFitHeight(600);
-		b2.setFitWidth(600);
+		b2.setFitWidth(900);
 		b2.setPreserveRatio(true);
 		b2.setImage(pic2);
-		
-		waiting.setTextFill(Color.WHITE);
-		waiting.setFont(Font.font("Cambria", 20));
-		waiting.setLayoutX(140);
-		waiting.setLayoutY(180);
-		
-		//set group
-		Group gamePlay = new Group();
-		game = new Scene(gamePlay,600,400);
-		gamePlay.getChildren().addAll(b2);
-		gamePlay.getChildren().add(waiting);
-		
-		
-		
-		
-		//map
+		*/
 		sceneMap.put("start_sc", scene);
 		sceneMap.put("network_sc", networking);
-		sceneMap.put("game_sc", game);
 		
 		primaryStage.setScene(sceneMap.get("start_sc"));
 		primaryStage.setResizable(false);
 		primaryStage.show();
 		
 	}
-	
 	
 	private Client createClient(String ip, int i) {
 		return new Client(ip, i, data -> {

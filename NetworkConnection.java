@@ -9,16 +9,20 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public abstract class NetworkConnection {
-	
+	Deck dealer_Deck = new Deck();
 	private ConnThread connthread = new ConnThread();
+	protected int count = 0;
+	protected int num_players_ol = 0;
 	private Consumer<Serializable> callback;
 	boolean clientOne, clientTwo;
 	String dataOne, dataTwo;
 	ArrayList<ClientThread> ct;
+	ArrayList<Player_info> pi;
 	//the list to store the players who wants to play
-	ArrayList<ClientThread> playable_list;
-	private int score1,score2;
+	//ArrayList<ClientThread> playable_list;
+	//private int score1,score2;
 	private Dealer mydealer = new Dealer();
+	int confim = 0;
 	
 	public NetworkConnection(Consumer<Serializable> callback) {
 		this.callback = callback;
@@ -36,11 +40,11 @@ public abstract class NetworkConnection {
 	
 	public void send(Serializable data) throws Exception{
 		if(isServer() && clientOne && clientTwo) {
-			String message = compare();
+			//String message = compare();
 			
 			ct.forEach(t->{
 				try {
-					t.tout.writeObject(message);
+					//t.tout.writeObject(message);
 					clientOne = false;
 					clientTwo = false;
 				}
@@ -54,129 +58,46 @@ public abstract class NetworkConnection {
 		}
 		
 	}
-	public String compare() {
-		String message = "ghj";
-		if(dataOne.equals("rock")) {
-			if(dataTwo.equals("rock")) {
-				message = "rock and rock, draw!" + "player1: " + this.score1 + " player2:"+this.score2;
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public void compare() {
+		for(int i =0; i<4; i++) {
+			if(ct.get(i).mydeck.cout() < 22) {
+				if(dealer_Deck.cout() >21) {
+					ct.get(i).result ="Tie!";
+				}
+				else if(ct.get(i).mydeck.cout() > dealer_Deck.cout()) {
+					ct.get(i).result ="you win!";
+				}
+				else {
+					ct.get(i).result ="you lose!";
+				}
 			}
-			if(dataTwo.equals("paper")) {
-				this.score2++;
-				message = "paper beat rock, player2 win!" + "player1: " + this.score1 + " player2:"+this.score2;
+			else {
+				ct.get(i).result ="you lose!";
 			}
-			if(dataTwo.equals("spock")) {
-				this.score2++;
-				message = "spock beat rock, player2 win!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			if(dataTwo.equals("scissors")) {
-				this.score1++;
-				message = "rock beat scissors, player1 win!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			if(dataTwo.equals("lizard")) {
-				this.score1++;
-				message = "rock beat lizard, player1 win!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-		}
-		if(dataOne.equals("paper")) {
-			if(dataTwo.equals("paper")) {
-				message = "paper and paper, draw!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			if(dataTwo.equals("rock")) {
-				this.score1++;
-				message = "paper beat rock, player1 win!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			if(dataTwo.equals("scissors")) {
-				this.score2++;
-				message = "scissors beat paper, player2 win!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			if(dataTwo.equals("spock")) {
-				this.score1++;
-				message = "paper beat spock, player1 win!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			if(dataTwo.equals("lizard")) {
-				this.score2++;
-				message = "lizard beat paper, player2 win!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			
-		}
-		if(dataOne.equals("scissors")) {
-			if(dataTwo.equals("scissors")) {
-				message = "scissors and scissors, draw!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			if(dataTwo.equals("paper")) {
-				this.score1++;
-				message = "scissors beat paper, player1 win!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			if(dataTwo.equals("rock")) {
-				this.score2++;
-				message = "rock beat scissors, player2 win!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			if(dataTwo.equals("lizard")) {
-				this.score1++;
-				message = "scissors beat lizard, player1 win!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			if(dataTwo.equals("spock")) {
-				this.score2++;
-				message = "spock beat scissors, player2 win!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			
-		}
-		if(dataOne.equals("spock")) {
-			if(dataTwo.equals("spock")) {
-				message = "spock and spock, draw!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			if(dataTwo.equals("paper")) {
-				this.score2++;
-				message = "paper beat spock, player2 win!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			if(dataTwo.equals("rock")) {
-				this.score1++;
-				message = "spock beat rock, player1 win!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			if(dataTwo.equals("lizard")) {
-				this.score2++;
-				message = "lizard beat spock, player2 win!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			if(dataTwo.equals("scissors")) {
-				this.score1++;
-				message = "spock beat scissors, player1 win!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			
-		}
-		if(dataOne.equals("lizard")) {
-			if(dataTwo.equals("lizard")) {
-				message = "lizard and lizard, draw!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			if(dataTwo.equals("paper")) {
-				this.score1++;
-				message = "lizard beat paper, player1 win!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			if(dataTwo.equals("rock")) {
-				this.score2++;
-				message = "rock beat lizard, player2 win!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			if(dataTwo.equals("spock")) {
-				this.score1++;
-				message = "lizard beat spock, player1 win!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			if(dataTwo.equals("scissors")) {
-				this.score2++;
-				message = "scissors beat lizard, player2 win!" + "player1: " + this.score1 + " player2:"+this.score2;
-			}
-			
 		}
 		
+		ct.forEach(t->{
+			try {
+				
+				t.tout.writeObject("Dealer's Card: ");
+				for (int a = 0; a < dealer_Deck.getDeckSize(); a++) {
+					t.tout.writeObject(dealer_Deck.getNthCard(a).toString());
+				}
+				t.tout.writeObject("Dealer's points: ");
+				t.tout.writeObject(dealer_Deck.cout());
+				t.tout.writeObject(t.result);
+				t.tout.writeObject("\n");
+				
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		});
 		
-		if(this.score1 == 3) {
-			message += " player1 win the game!";
-		}
-		if(this.score2 == 3) {
-			message += " player2 win the game!";
-		}
 		
-		return message;
 	}
-	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void closeConn() throws Exception{
 		connthread.socket.close();
 	}
@@ -207,37 +128,30 @@ public abstract class NetworkConnection {
 		
 		
 		public void run() {
-			int number =1;
+			int number = 1;
 			if(isServer()) {
 				try {
 					server = new ServerSocket(getPort());
 					while(true) {
 						ClientThread t1 = new ClientThread(server.accept(),number);
 						ct.add(t1);
+						//Player_info tmp = new Player_info(number);
+						//pi.add(tmp);
 						t1.start();
 						callback.accept("player" + number + " join");
 						number++;
 						Thread.sleep(1000);
 						if (ct.size() >= 4) {
-							for(int i = 0; i < ct.size(); i++ ) {
-								try {
-									ct.get(i).tout.writeObject("There Are " + ct.size() + " Players Online, Do You Want To Start?\n");
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-							}
-						}
-						if (playable_list.size() >= 4) {
+							//Player_info tmp_s = new Player_info(5);
+							//pi.add(tmp_s);
 							gameStart();
 						}
-						
 					}
-				} 
+				}
 				catch (Exception e) {
 				}
-				
 			}
+			
 			else {
 				try {
 					Socket socket = new Socket(getIP(), getPort());
@@ -260,10 +174,6 @@ public abstract class NetworkConnection {
 			}
 		}
 
-
-
-
-
 		
 	}
 	
@@ -273,6 +183,8 @@ public abstract class NetworkConnection {
 		ObjectOutputStream tout;
 		ObjectInputStream tin;
 		Player myplayer;
+		Deck mydeck = new Deck();
+		String result;
 		
 		ClientThread(Socket socket, int num){
 			this.s = socket;
@@ -287,7 +199,7 @@ public abstract class NetworkConnection {
 				this.tout = out;
 				this.tin = in;
 				//System.out.print("here");
-				tout.writeObject("welcome player: "+ number);
+				tout.writeObject("Welcome player: "+ number + "\n");
 				/*
 				if(number ==1) {
 					tout.writeObject("waiting for another player come in");
@@ -299,7 +211,35 @@ public abstract class NetworkConnection {
 				*/
 				while(true) {
 					Serializable data = (Serializable) in.readObject();
+					String inputdata = data.toString();
+					/*
+					System.out.println(inputdata.substring(0,4));
+					if( inputdata.substring(0, 4).equals("Read")) {
+						count++;
+						num_players_ol--;
+					}*/
 					
+					System.out.println(inputdata.substring(0,3));
+					if( inputdata.substring(0, 3).equals("get")) {
+						System.out.println(number);
+						Card c = mydealer.dealACard();
+						System.out.println(""+c.getSuit()+c.getValue());
+						mydeck.addCard(c);
+						if (mydeck.cout() > 21) {
+							ct.get(number-1).tout.writeObject("\nBOMB!!!! DON'T REQUEST A CARD ANY FURTHER\n");
+						}
+						
+						//mydeck.printCards();
+						displaycard();
+					}
+					if( inputdata.substring(0, 3).equals("yes")) {
+						confim++;
+					}
+					if(confim == 4) {
+						System.out.print("suan fen");
+						cal_ai_score();
+						compare();
+					}
 					callback.accept(data);
 				}
 				
@@ -310,22 +250,98 @@ public abstract class NetworkConnection {
 		}
 		
 	}
-	
-	public void gameStart() {
-		mydealer.startGame();
-		String card;
-		for(int i = 0; i < 4; i++ ) {
-			try {
-				card= mydealer.dealACard().toString();
-				playable_list.get(i).tout.writeObject(card);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	public void cal_ai_score() {
+		while (dealer_Deck.cout() <= 14) {
+			dealer_Deck.addCard(mydealer.dealACard());
 		}
+	}
+	public void displaycard() throws Exception{
+			
+			ct.forEach(t->{
+				String message;
+				try {
+					for(int i=0; i<5; i++) {
+						if(i == 4) {
+							for(int j=0; j< dealer_Deck.getDeckSize(); j++){
+								if(j!=0) {
+									message = "dealer: " + dealer_Deck.getNthCard(j).toString() + "\n///////////////////////////////////////////////////////";
+									t.tout.writeObject(message);
+								}
+								
+							}
+						}
+						else {
+							//t.tout.writeObject("/////////////////////////////////////////////////////////");
+							for(int s=0; s< ct.get(i).mydeck.getDeckSize(); s++){
+								if(s!=0) {
+									message = "player" + (i+1) +" " +ct.get(i).mydeck.getNthCard(s).toString();
+									t.tout.writeObject(message);
+								}
+								
+							}
+						}
+						
+						//t.tout.writeObject(message);
+					}
+					
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+			});
+		
 		
 	}
 	
+
+	public void gameStart() {
+		mydealer.startGame();
+		ArrayList<Deck> display_card = new ArrayList<Deck>();
+		//Card card_0;
+		Card card;
+		for(int j = 0; j < 2; j++) {
+			for(int i = 0; i < 5; i++ ) {
+				try {
+					if(i == 4) {
+						card = mydealer.dealACard();
+						dealer_Deck.addCard(card);
+						
+						
+					}
+					else {
+						//card_0 = mydealer.dealACard();
+						card = mydealer.dealACard();
+						//System.out.print(card.toString());
+						//ct.get(i).mydeck.addCard(card);
+						ct.get(i).mydeck.addCard(card);
+						//System.out.println("1111");
+						ct.get(i).tout.writeObject(card.toString());
+						//ystem.out.println("2222");
+						
+						
+					}
+					
+					
+					
+					//playable_list.get(i).tout.writeObject(card);
+					//ct.get(i).tout.writeObject(card.toString());
+					//pi.get(i).getDeck().addCard(card_0);
+
+
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		try {
+			displaycard();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 }	
 
 
