@@ -63,7 +63,7 @@ public abstract class NetworkConnection {
 		for(int i =0; i<4; i++) {
 			if(ct.get(i).mydeck.cout() < 22) {
 				if(dealer_Deck.cout() >21) {
-					ct.get(i).result ="Tie!";
+					ct.get(i).result ="you win!";
 				}
 				else if(ct.get(i).mydeck.cout() > dealer_Deck.cout()) {
 					ct.get(i).result ="you win!";
@@ -86,6 +86,12 @@ public abstract class NetworkConnection {
 				}
 				t.tout.writeObject("Dealer's points: ");
 				t.tout.writeObject(dealer_Deck.cout());
+				t.tout.writeObject("Your cards: ");
+				for (int b = 0; b < dealer_Deck.getDeckSize(); b++) {
+					t.tout.writeObject(t.mydeck.getNthCard(b).toString());
+				}
+				t.tout.writeObject("Your points: ");
+				t.tout.writeObject(t.mydeck.cout());
 				t.tout.writeObject(t.result);
 				t.tout.writeObject("\n");
 				
@@ -260,6 +266,11 @@ public abstract class NetworkConnection {
 			ct.forEach(t->{
 				String message;
 				try {
+					t.tout.writeObject("Your cards: ");
+					for(int q=0; q < t.mydeck.getDeckSize();q++)
+					{
+						t.tout.writeObject(t.mydeck.getNthCard(q).toString());
+					}
 					for(int i=0; i<5; i++) {
 						if(i == 4) {
 							for(int j=0; j< dealer_Deck.getDeckSize(); j++){
@@ -301,12 +312,10 @@ public abstract class NetworkConnection {
 		Card card;
 		for(int j = 0; j < 2; j++) {
 			for(int i = 0; i < 5; i++ ) {
-				try {
+				//try {
 					if(i == 4) {
 						card = mydealer.dealACard();
 						dealer_Deck.addCard(card);
-						
-						
 					}
 					else {
 						//card_0 = mydealer.dealACard();
@@ -315,23 +324,19 @@ public abstract class NetworkConnection {
 						//ct.get(i).mydeck.addCard(card);
 						ct.get(i).mydeck.addCard(card);
 						//System.out.println("1111");
-						ct.get(i).tout.writeObject(card.toString());
+						//ct.get(i).tout.writeObject(card.toString());
 						//ystem.out.println("2222");
-						
-						
 					}
-					
-					
 					
 					//playable_list.get(i).tout.writeObject(card);
 					//ct.get(i).tout.writeObject(card.toString());
 					//pi.get(i).getDeck().addCard(card_0);
 
 
-				} catch (IOException e) {
+				/*} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}*/
 			}
 		}
 		try {

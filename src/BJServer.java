@@ -32,6 +32,7 @@ public class BJServer extends Application{
 	private NetworkConnection  conn; 
 	private TextArea messages = new TextArea();
 
+	
 	public static void main(String[] args) {
 		
 		launch(args);
